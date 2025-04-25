@@ -1,0 +1,68 @@
+name: Build lldb-dap
+
+on:
+  workflow_dispatch
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Submodules
+      run: |
+        git submodule update --init --single-branch --depth=1
+    
+    - name: Build
+      run: |
+        sh linux/build.sh
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lldb-dap-linux-x86_64
+        retention-days: 1
+        if-no-files-found: error
+        path: lldb-dap-linux-x86_64.tar.gz
+
+  macos-x86_64:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Submodules
+      run: |
+        git submodule update --init --single-branch --depth=1
+  
+    - name: Build
+      run: |
+        sh linux/build.sh x86_64
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lldb-dap-macos-x86_64
+        retention-days: 1
+        if-no-files-found: error
+        path: lldb-dap-macos-x86_64.tar.gz
+
+  macos-arm64:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Submodules
+      run: |
+        git submodule update --init --single-branch --depth=1
+  
+    - name: Build
+      run: |
+        sh linux/build.sh arm64
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lldb-dap-macos-arm64
+        retention-days: 1
+        if-no-files-found: error
+        path: lldb-dap-macos-arm64.tar.gz
