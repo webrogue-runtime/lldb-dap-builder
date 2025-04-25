@@ -1,2 +1,4 @@
 /build
 /.cache
+/lldb-dap-macos-arm64
+/lldb-dap-macos-arm64.tar.gz

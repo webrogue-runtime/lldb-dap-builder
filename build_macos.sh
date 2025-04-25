@@ -1,3 +1,5 @@
+ARCH=$1 # arm64 x86_64
+
 cmake -B build -S llvm-project/llvm \
     -DLLVM_ENABLE_PROJECTS="lldb;clang" \
     -DBUILD_SHARED_LIBS=OFF \
@@ -15,6 +17,16 @@ cmake -B build -S llvm-project/llvm \
     -DLLVM_ENABLE_LIBPFM=OFF \
     -DLLVM_ENABLE_PLUGINS=OFF \
     -DLLDB_ENABLE_CURSES=OFF \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_OSX_ARCHITECTURES=$ARCH
 
-cmake --build build --target=lldb-dap -j $(nproc)
+cmake --build build --target=lldb-dap
+
+rm -rf lldb-dap-macos-$ARCH
+mkdir lldb-dap-macos-$ARCH
+mkdir lldb-dap-macos-$ARCH/bin
+mkdir lldb-dap-macos-$ARCH/lib
+cp build/bin/lldb-dap lldb-dap-macos-$ARCH/bin
+cp build/lib/liblldb*.dylib lldb-dap-macos-$ARCH/lib
+rm -f lldb-dap-macos-$ARCH.tar.gz
+tar czf lldb-dap-macos-$ARCH.tar.gz lldb-dap-macos-$ARCH/
