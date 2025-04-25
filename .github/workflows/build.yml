@@ -76,17 +76,17 @@ jobs:
     steps:
     - uses: actions/download-artifact@v4
       with: 
-        name: lldb-dap-linux-x86_64.tar.gz
+        name: lldb-dap-linux-x86_64
         path: .
 
     - uses: actions/download-artifact@v4
       with: 
-        name: lldb-dap-macos-x86_64.tar.gz
+        name: lldb-dap-macos-x86_64
         path: .
 
     - uses: actions/download-artifact@v4
       with: 
-        name: lldb-dap-macos-arm64.tar.gz
+        name: lldb-dap-macos-arm64
         path: .
   
     - name: Update tag
