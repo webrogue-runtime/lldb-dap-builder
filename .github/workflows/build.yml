@@ -66,3 +66,42 @@ jobs:
         retention-days: 1
         if-no-files-found: error
         path: lldb-dap-macos-arm64.tar.gz
+
+  release:
+    needs: [linux, macos-x86_64, macos-arm64]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/download-artifact@v4
+      with: 
+        name: lldb-dap-linux-x86_64.tar.gz
+        path: .
+
+    - uses: actions/download-artifact@v4
+      with: 
+        name: lldb-dap-macos-x86_64.tar.gz
+        path: .
+
+    - uses: actions/download-artifact@v4
+      with: 
+        name: lldb-dap-macos-arm64.tar.gz
+        path: .
+  
+    - name: Update tag
+      run: |
+        git tag -f latest
+        git push --force origin latest
+
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: |
+          lldb-dap-linux-x86_64.tar.gz
+          lldb-dap-macos-x86_64.tar.gz
+          lldb-dap-macos-arm64.tar.gz
+        name: Continuous build
+        allowUpdates: true
+        tag: latest
+        commit: ${{ github.ref }}
+        makeLatest: true
