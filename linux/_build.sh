@@ -6,8 +6,8 @@ cmake -B build -S llvm-project/llvm \
     -DLLVM_ENABLE_PROJECTS="lldb;clang" \
     -DBUILD_SHARED_LIBS=OFF \
     -DLLVM_ENABLE_LIBXML2=OFF \
-    -DLLVM_ENABLE_ZLIB=OFF \
-    -DLLVM_ENABLE_ZSTD=OFF \
+    -DLLVM_ENABLE_ZLIB=FORCE_ON \
+    -DLLVM_ENABLE_ZSTD=FORCE_ON \
     -DLLVM_TARGETS_TO_BUILD=X86 \
     -DLLDB_INCLUDE_TESTS=OFF \
     -DLLDB_ENABLE_PYTHON=OFF \
@@ -29,6 +29,6 @@ mkdir lldb-dap-linux-x86_64
 mkdir lldb-dap-linux-x86_64/bin
 mkdir lldb-dap-linux-x86_64/lib
 cp build/bin/lldb-dap build/bin/lldb-server lldb-dap-linux-x86_64/bin
-cp build/lib/liblldb*.so lldb-dap-linux-x86_64/lib
+cp build/lib/liblldb.so* lldb-dap-linux-x86_64/lib
 rm -f lldb-dap-linux-x86_64.tar.gz
 tar czf lldb-dap-linux-x86_64.tar.gz lldb-dap-linux-x86_64/
