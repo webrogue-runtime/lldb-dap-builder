@@ -111,12 +111,10 @@ jobs:
     - uses: actions/download-artifact@v4
       with: 
         name: lldb-dap-windows-x86_64-raw
-        path: .
+        path: lldb-dap-windows-x86_64/bin
 
     - name: Repack Windows archive
       run: |
-        mkdir lldb-dap-windows-x86_64
-        cp -r build/Release/bin/ lldb-dap-windows-x86_64
         zip -r lldb-dap-windows-x86_64.zip lldb-dap-windows-x86_64
 
     - uses: actions/download-artifact@v4
