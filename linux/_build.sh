@@ -30,5 +30,6 @@ mkdir lldb-dap-linux-x86_64/bin
 mkdir lldb-dap-linux-x86_64/lib
 cp build/bin/lldb-dap build/bin/lldb-server lldb-dap-linux-x86_64/bin
 cp build/lib/liblldb.so* lldb-dap-linux-x86_64/lib
+rm lldb-dap-linux-x86_64/lib/liblldb.so.*.*.*git lldb-dap-linux-x86_64/lib/liblldb.so
 rm -f lldb-dap-linux-x86_64.tar.gz
 tar czf lldb-dap-linux-x86_64.tar.gz lldb-dap-linux-x86_64/
