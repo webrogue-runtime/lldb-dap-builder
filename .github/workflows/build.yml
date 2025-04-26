@@ -24,6 +24,31 @@ jobs:
         retention-days: 1
         if-no-files-found: error
         path: lldb-dap-linux-x86_64.tar.gz
+  
+  windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Submodules
+      run: |
+        git submodule update --init --single-branch --depth=1
+
+    - name: Build
+      shell: cmd 
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
+        powershell.exe windows/build.ps1
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lldb-dap-windows-x86_64-raw
+        if-no-files-found: error
+        path: |
+          build/Release/bin/liblldb.dll
+          build/Release/bin/lldb-dap.exe
+          build/Release/bin/lldb-server.exe
+
 
   macos-x86_64:
     runs-on: macos-latest
@@ -68,7 +93,7 @@ jobs:
         path: lldb-dap-macos-arm64.tar.gz
 
   release:
-    needs: [linux, macos-x86_64, macos-arm64]
+    needs: [linux, windows, macos-x86_64, macos-arm64]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -80,6 +105,19 @@ jobs:
       with: 
         name: lldb-dap-linux-x86_64
         path: .
+
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4
+      with: 
+        name: lldb-dap-windows-x86_64-raw
+        path: .
+
+    - name: Repack Windows archive
+      run: |
+        mkdir lldb-dap-windows-x86_64
+        cp -r build/Release/bin/ lldb-dap-windows-x86_64
+        zip -r lldb-dap-windows-x86_64.zip lldb-dap-windows-x86_64
 
     - uses: actions/download-artifact@v4
       with: 
@@ -100,6 +138,7 @@ jobs:
       with:
         artifacts: |
           lldb-dap-linux-x86_64.tar.gz
+          lldb-dap-windows-x86_64.zip
           lldb-dap-macos-x86_64.tar.gz
           lldb-dap-macos-arm64.tar.gz
         name: Continuous build
