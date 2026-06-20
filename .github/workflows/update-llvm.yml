@@ -1,0 +1,38 @@
+name: Update llvm-project submodule
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "llvm-project commit hash to pin the submodule to"
+        required: true
+        type: string
+
+jobs:
+  update-submodule:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+
+    - name: Fetch commit in submodule
+      run: git -C llvm-project fetch origin ${{ inputs.commit }}
+
+    - name: Pin submodule to commit
+      run: git -C llvm-project checkout FETCH_HEAD
+
+    - name: Commit and push
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add llvm-project
+        if git diff --cached --quiet; then
+          echo "llvm-project already at ${{ inputs.commit }}"
+          exit 0
+        fi
+        git commit -m "llvm-project: update to ${{ inputs.commit }}"
+        git push
