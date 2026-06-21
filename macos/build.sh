@@ -10,11 +10,11 @@ cmake -B build -S llvm-project/llvm \
     -DLLVM_ENABLE_LIBXML2=OFF \
     -DLLVM_ENABLE_ZLIB=OFF \
     -DLLVM_ENABLE_ZSTD=OFF \
-    -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+    -DLLVM_TARGETS_TO_BUILD=WebAssembly \
     -DLLDB_INCLUDE_TESTS=OFF \
     -DLLDB_ENABLE_PYTHON=OFF \
     -DLLDB_ENABLE_LIBEDIT=OFF \
-    -DLLDB_ENABLE_LIBXML2=OFF \
+    -DLLDB_ENABLE_LIBXML2=ON \
     -DLLDB_ENABLE_LUA=OFF \
     -DLLDB_ENABLE_LZMA=OFF \
     -DLLVM_ENABLE_LIBEDIT=OFF \
@@ -22,7 +22,8 @@ cmake -B build -S llvm-project/llvm \
     -DLLVM_ENABLE_PLUGINS=OFF \
     -DLLDB_ENABLE_CURSES=OFF \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_OSX_ARCHITECTURES=$ARCH
+    -DCMAKE_OSX_ARCHITECTURES=$ARCH \
+    -DLLDB_BUILD_FRAMEWORK=OFF
 
 cmake --build build --target=lldb-dap --parallel=$(sysctl -n hw.physicalcpu)
 cmake --build build --target=lldb-server --parallel=$(sysctl -n hw.physicalcpu)
