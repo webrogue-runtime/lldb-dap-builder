@@ -5,6 +5,7 @@ cd ..
 ARCH=$1 # arm64 x86_64
 
 cmake -B build -S llvm-project/llvm \
+    -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
     -DLLVM_ENABLE_PROJECTS="lldb;clang" \
     -DBUILD_SHARED_LIBS=OFF \
     -DLLVM_ENABLE_LIBXML2=OFF \

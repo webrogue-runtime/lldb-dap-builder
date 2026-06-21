@@ -34,6 +34,16 @@ jobs:
       run: |
         git submodule update --init --single-branch --depth=1
 
+    - name: Set up vcpkg cached path
+      run: |
+        echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
+      shell: pwsh
+
+    - name: Install LibXml2 via vcpkg
+      run: |
+        vcpkg install libxml2:x64-windows-static
+      shell: pwsh
+
     - name: Build
       shell: cmd 
       run: |
@@ -59,7 +69,15 @@ jobs:
     - name: Submodules
       run: |
         git submodule update --init --single-branch --depth=1
-  
+
+    - name: Set up vcpkg cached path
+      run: |
+        echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
+
+    - name: Install vcpkg dependencies (macOS)
+      run: |
+        vcpkg install libxml2:x64-osx-static
+    
     - name: Build
       run: |
         sh macos/build.sh x86_64
@@ -80,6 +98,14 @@ jobs:
     - name: Submodules
       run: |
         git submodule update --init --single-branch --depth=1
+
+    - name: Set up vcpkg cached path
+      run: |
+        echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
+
+    - name: Install vcpkg dependencies (macOS)
+      run: |
+        vcpkg install libxml2:arm64-osx-static
   
     - name: Build
       run: |
