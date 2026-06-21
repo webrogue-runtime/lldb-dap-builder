@@ -75,8 +75,10 @@ jobs:
         echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
 
     - name: Install vcpkg dependencies (macOS)
+      env:
+        VCPKG_DEFAULT_TRIPLET: x64-osx
       run: |
-        vcpkg install libxml2:x64-osx-static
+        vcpkg install libxml2
     
     - name: Build
       run: |
@@ -104,8 +106,10 @@ jobs:
         echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
 
     - name: Install vcpkg dependencies (macOS)
+      env:
+        VCPKG_DEFAULT_TRIPLET: arm64-osx
       run: |
-        vcpkg install libxml2:arm64-osx-static
+        vcpkg install libxml2:arm64-osx
   
     - name: Build
       run: |
