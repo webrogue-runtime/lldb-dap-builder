@@ -69,18 +69,12 @@ jobs:
     - name: Submodules
       run: |
         git submodule update --init --single-branch --depth=1
-
-    - name: Install vcpkg dependencies (macOS)
-      env:
-        VCPKG_ROOT: /usr/local/share/vcpkg
-        VCPKG_DEFAULT_TRIPLET: x64-osx
+    
+    - name: Install dependencied
       run: |
-        vcpkg install libxml2
+        brew install libxml2
     
     - name: Build
-      env:
-        VCPKG_ROOT: /usr/local/share/vcpkg
-        VCPKG_DEFAULT_TRIPLET: x64-osx
       run: |
         sh macos/build.sh x86_64
 
@@ -100,22 +94,8 @@ jobs:
     - name: Submodules
       run: |
         git submodule update --init --single-branch --depth=1
-
-    - name: Set up vcpkg cached path
-      run: |
-        echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
-
-    - name: Install vcpkg dependencies (macOS)
-      env:
-        VCPKG_ROOT: /usr/local/share/vcpkg
-        VCPKG_DEFAULT_TRIPLET: arm64-osx
-      run: |
-        vcpkg install libxml2:arm64-osx
   
     - name: Build
-      env:
-        VCPKG_ROOT: /usr/local/share/vcpkg
-        VCPKG_DEFAULT_TRIPLET: arm64-osx
       run: |
         sh macos/build.sh arm64
 

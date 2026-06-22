@@ -5,12 +5,9 @@ cd ..
 ARCH=$1 # arm64 x86_64
 
 cmake -B build -S llvm-project/llvm \
-    -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
-    -DVCPKG_TARGET_TRIPLET=$ARCH-osx \
-    -D"LibXml2_STATIC_LIBRARY=LibXml2::LibXml2" \
     -DLLVM_ENABLE_PROJECTS="lldb;clang" \
     -DBUILD_SHARED_LIBS=OFF \
-    -DLLVM_ENABLE_LIBXML2=OFF \
+    -DLLVM_ENABLE_LIBXML2=ON \
     -DLLVM_ENABLE_ZLIB=OFF \
     -DLLVM_ENABLE_ZSTD=OFF \
     -DLLVM_TARGETS_TO_BUILD=WebAssembly \
@@ -26,17 +23,16 @@ cmake -B build -S llvm-project/llvm \
     -DLLDB_ENABLE_CURSES=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_ARCHITECTURES=$ARCH \
-    -DLLDB_BUILD_FRAMEWORK=OFF
+    -DLLDB_ENABLE_DYNAMIC_SCRIPTINTERPRETERS=OFF
 
-cmake --build build --target=lldb-dap --parallel=$(sysctl -n hw.physicalcpu)
-cmake --build build --target=lldb-server --parallel=$(sysctl -n hw.physicalcpu)
+cmake --build build --target=lldb-dap --parallel=$(sysctl -n hw.logicalcpu)
 
 rm -rf lldb-dap-macos-$ARCH
 rm -f lldb-dap-macos-$ARCH.tar.gz
 mkdir lldb-dap-macos-$ARCH
 mkdir lldb-dap-macos-$ARCH/bin
 mkdir lldb-dap-macos-$ARCH/lib
-cp build/bin/lldb-dap build/bin/lldb-server lldb-dap-macos-$ARCH/bin
+cp build/bin/lldb-dap lldb-dap-macos-$ARCH/bin
 cp build/lib/liblldb*.dylib lldb-dap-macos-$ARCH/lib
 rm lldb-dap-macos-$ARCH/lib/liblldb.dylib
 tar czf lldb-dap-macos-$ARCH.tar.gz lldb-dap-macos-$ARCH/

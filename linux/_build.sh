@@ -27,7 +27,7 @@ rm -rf lldb-dap-linux-x86_64
 mkdir lldb-dap-linux-x86_64
 mkdir lldb-dap-linux-x86_64/bin
 mkdir lldb-dap-linux-x86_64/lib
-cp build/bin/lldb-dap build/bin/lldb-server lldb-dap-linux-x86_64/bin
+cp build/bin/lldb-dap lldb-dap-linux-x86_64/bin
 cp build/lib/liblldb.so* lldb-dap-linux-x86_64/lib
 rm lldb-dap-linux-x86_64/lib/liblldb.so.*.*.*git lldb-dap-linux-x86_64/lib/liblldb.so
 cp /usr/lib64/libxml2.so* lldb-dap-linux-x86_64/lib
