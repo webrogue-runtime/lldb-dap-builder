@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 
+$env:PATH = "$env:VCPKG_ROOT;$env:PATH"
 
-          
 cmake `
     -B build `
     -S llvm-project/llvm `
