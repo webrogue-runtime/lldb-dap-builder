@@ -50,6 +50,7 @@ jobs:
         for /f "usebackq tokens=*" %%i in (`vswhere -latest -find Common7\Tools\VsDevCmd.bat`) do (
           call "%%i"
         )
+        powershell.exe windows/build.ps1
 
     - uses: actions/upload-artifact@v4
       with:
