@@ -1,0 +1,7 @@
+{
+  "name": "my-xml-project",
+  "version": "1.0.0",
+  "dependencies": [
+    "libxml2"
+  ]
+}

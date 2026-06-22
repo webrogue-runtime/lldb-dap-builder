@@ -39,26 +39,28 @@ jobs:
         echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
       shell: pwsh
 
-    - name: Install LibXml2 via vcpkg
+    - name: Install vcpkg dependencies
       run: |
-        vcpkg install libxml2:x64-windows-static
+        vcpkg install --triplet x64-windows
       shell: pwsh
 
     - name: Build
       shell: cmd 
       run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
-        powershell.exe windows/build.ps1
+        for /f "usebackq tokens=*" %%i in (`vswhere -latest -find Common7\Tools\VsDevCmd.bat`) do (
+          call "%%i"
+        )
 
     - uses: actions/upload-artifact@v4
       with:
         name: lldb-dap-windows-x86_64-raw
         if-no-files-found: error
         path: |
+          build/Release/bin/iconv-2.dll
           build/Release/bin/liblldb.dll
+          build/Release/bin/libxml2.dll
           build/Release/bin/lldb-dap.exe
-          build/Release/bin/lldb-server.exe
-
+          build/Release/bin/z.dll
 
   macos-x86_64:
     runs-on: macos-latest
@@ -69,10 +71,6 @@ jobs:
     - name: Submodules
       run: |
         git submodule update --init --single-branch --depth=1
-    
-    - name: Install dependencied
-      run: |
-        brew install libxml2
     
     - name: Build
       run: |
