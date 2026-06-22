@@ -1,6 +1,7 @@
 $ErrorActionPreference = "Stop"
 
 $env:PATH = "$env:VCPKG_ROOT;$env:PATH"
+$manifestDir = (Resolve-Path "$PSScriptRoot\..").Path
 
 cmake `
     -B build `
@@ -8,6 +9,7 @@ cmake `
     -A x64 `
     -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" `
     -DVCPKG_TARGET_TRIPLET=x64-windows `
+    -DVCPKG_MANIFEST_DIR="$manifestDir" `
     -DLLVM_ENABLE_PROJECTS="lldb;clang" `
     -DBUILD_SHARED_LIBS=OFF `
     -DLLVM_ENABLE_LIBXML2=ON `
