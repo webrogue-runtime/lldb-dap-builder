@@ -7,6 +7,7 @@ ARCH=$1 # arm64 x86_64
 cmake -B build -S llvm-project/llvm \
     -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
     -DVCPKG_TARGET_TRIPLET=$ARCH-osx \
+    -D"LibXml2_STATIC_LIBRARY=LibXml2::LibXml2" \
     -DLLVM_ENABLE_PROJECTS="lldb;clang" \
     -DBUILD_SHARED_LIBS=OFF \
     -DLLVM_ENABLE_LIBXML2=OFF \

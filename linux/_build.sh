@@ -13,8 +13,6 @@ cmake -B build -S llvm-project/llvm \
     -DLLDB_ENABLE_PYTHON=OFF \
     -DLLDB_ENABLE_LIBEDIT=OFF \
     -DLLDB_ENABLE_LIBXML2=ON \
-    -DLibXml2_USE_STATIC_LIBS=ON \
-    -DLLVM_USE_STATIC_LIBXML2=ON \
     -DLLDB_ENABLE_LUA=OFF \
     -DLLDB_ENABLE_LZMA=OFF \
     -DLLVM_ENABLE_LIBEDIT=OFF \
@@ -24,14 +22,15 @@ cmake -B build -S llvm-project/llvm \
     -DCMAKE_BUILD_TYPE=Release
 
 cmake --build build --target=lldb-dap -j $(nproc)
-cmake --build build --target=lldb-server -j $(nproc)
 
 rm -rf lldb-dap-linux-x86_64
 mkdir lldb-dap-linux-x86_64
 mkdir lldb-dap-linux-x86_64/bin
 mkdir lldb-dap-linux-x86_64/lib
 cp build/bin/lldb-dap build/bin/lldb-server lldb-dap-linux-x86_64/bin
-# cp build/lib/liblldb.so* lldb-dap-linux-x86_64/lib
-# rm lldb-dap-linux-x86_64/lib/liblldb.so.*.*.*git lldb-dap-linux-x86_64/lib/liblldb.so
+cp build/lib/liblldb.so* lldb-dap-linux-x86_64/lib
+rm lldb-dap-linux-x86_64/lib/liblldb.so.*.*.*git lldb-dap-linux-x86_64/lib/liblldb.so
+cp /usr/lib64/libxml2.so* lldb-dap-linux-x86_64/lib
+rm lldb-dap-linux-x86_64/lib/libxml2.so.*.*.* lldb-dap-linux-x86_64/lib/libxml2.so
 rm -f lldb-dap-linux-x86_64.tar.gz
 tar czf lldb-dap-linux-x86_64.tar.gz lldb-dap-linux-x86_64/
