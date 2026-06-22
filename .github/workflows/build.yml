@@ -34,11 +34,6 @@ jobs:
       run: |
         git submodule update --init --single-branch --depth=1
 
-    - name: Set up vcpkg cached path
-      run: |
-        echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" >> $env:GITHUB_ENV
-      shell: pwsh
-
     - name: Build
       shell: cmd 
       run: |
@@ -47,7 +42,7 @@ jobs:
         )
         set VCPKG_ROOT=%VCPKG_INSTALLATION_ROOT%
         set PATH=%VCPKG_ROOT%;%PATH%
-        vcpkg install --triplet x64-windows
+        where vcpkg
         powershell.exe windows/build.ps1
 
     - uses: actions/upload-artifact@v4
