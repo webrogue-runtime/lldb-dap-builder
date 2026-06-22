@@ -63,8 +63,14 @@ jobs:
           build/Release/bin/lldb-dap.exe
           build/Release/bin/z.dll
 
-  macos-x86_64:
+  macos:
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+          - arch: arm64
 
     steps:
     - uses: actions/checkout@v7
@@ -72,41 +78,20 @@ jobs:
     - name: Submodules
       run: |
         git submodule update --init --single-branch --depth=1
-    
+
     - name: Build
       run: |
-        sh macos/build.sh x86_64
+        sh macos/build.sh ${{ matrix.arch }}
 
     - uses: actions/upload-artifact@v4
       with:
-        name: lldb-dap-macos-x86_64
+        name: lldb-dap-macos-${{ matrix.arch }}
         retention-days: 1
         if-no-files-found: error
-        path: lldb-dap-macos-x86_64.tar.gz
-
-  macos-arm64:
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v7
-
-    - name: Submodules
-      run: |
-        git submodule update --init --single-branch --depth=1
-  
-    - name: Build
-      run: |
-        sh macos/build.sh arm64
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: lldb-dap-macos-arm64
-        retention-days: 1
-        if-no-files-found: error
-        path: lldb-dap-macos-arm64.tar.gz
+        path: lldb-dap-macos-${{ matrix.arch }}.tar.gz
 
   release:
-    needs: [linux, windows, macos-x86_64, macos-arm64]
+    needs: [linux, windows, macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
